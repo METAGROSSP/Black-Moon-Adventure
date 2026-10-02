@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.InputSystem; // Requerido para Unity Input System Package
+using UnityEngine.InputSystem;
 
 public class PauseMenu : MonoBehaviour
 {
@@ -9,19 +9,9 @@ public class PauseMenu : MonoBehaviour
 
     public static bool EnPausa { get; private set; }
 
-    private void OnEnable()
-    {
-        // Suscripción a eventos si necesitas reaccionar a cambios externos (Patrón Observer)
-    }
-
-    private void OnDisable()
-    {
-        // Garantizar el limpiado de suscripciones para evitar MissingReferenceException
-    }
-
     private void Update()
     {
-        // Detección moderna con Input System (remplaza a Input.GetKeyDown)
+        // Detección moderna con Input System
         if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
         {
             if (EnPausa)
@@ -33,20 +23,22 @@ public class PauseMenu : MonoBehaviour
 
     public void Pausar()
     {
-        panelPausa.SetActive(true);
-        Time.timeScale = 0f; // Congela la física y la interpolación por deltaTime
+        if (panelPausa != null) panelPausa.SetActive(true);
+        Time.timeScale = 0f; // Congela la física
         EnPausa = true;
     }
 
     public void Reanudar()
     {
-        panelPausa.SetActive(false);
-        Time.timeScale = 1f; // Restablece la escala de tiempo
+        Debug.Log("Botón presionado");
+        if (panelPausa != null) panelPausa.SetActive(false);
+        Time.timeScale = 1f; // Restablece el tiempo
         EnPausa = false;
     }
 
     public void IrAlMenu()
     {
+        Debug.Log("Botón presionado");
         RestablecerTiempo();
         SceneManager.LoadScene("MainMenu");
     }

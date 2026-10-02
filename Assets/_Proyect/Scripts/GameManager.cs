@@ -4,7 +4,10 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
-    void Awake()
+    // Variable para guardar el puntaje actual
+    public int Puntos { get; private set; }
+
+    private void Awake()
     {
         if (Instance != null && Instance != this)
         {
@@ -17,6 +20,9 @@ public class GameManager : MonoBehaviour
 
     public void SumarPuntos(int cantidad)
     {
-        // Tu lógica de puntos o estado de juego aquí
+        Puntos += cantidad; // 1. Acumulamos la cantidad
+
+        // 2. Disparamos el evento para que UIManager lo escuche
+        GameEvents.OnPuntosCambiados?.Invoke(Puntos);
     }
 }
