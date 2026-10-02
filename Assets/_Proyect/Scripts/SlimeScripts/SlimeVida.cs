@@ -26,13 +26,19 @@ public class SlimeVida : MonoBehaviour
 
     private void Morir()
     {
-        // Opcional: Sumar puntos al GameManager si está presente
+        // 1. Notificar al GameManager PRIMERO
         if (GameManager.Instance != null)
         {
             GameManager.Instance.SumarPuntos(puntosAlMorir);
         }
+        else
+        {
+            Debug.LogWarning("No se encontró una instancia de GameManager en la escena.");
+        }
 
         Debug.Log("¡Slime destruido!");
+
+        // 2. Destruir el GameObject AL FINAL
         Destroy(gameObject);
     }
 }

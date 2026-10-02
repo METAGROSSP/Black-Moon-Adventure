@@ -39,4 +39,12 @@ public class UIManager : MonoBehaviour
             textoPuntos.text = puntos.ToString("D4");
         }
     }
+    private void Start()
+    {
+        // Muestra los puntos iniciales (0) al arrancar la escena
+        if (GameManager.Instance != null)
+        {
+            ActualizarPuntos(GameManager.Instance.Puntos);
+        }
+    }
 }
