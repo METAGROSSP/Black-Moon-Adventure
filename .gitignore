@@ -1,3 +1,6 @@
+# =========================================================================
+# Unity - Archivos y carpetas temporales generados automáticamente
+# =========================================================================
 /[Ll]ibrary/
 /[Tt]emp/
 /[Oo]bj/
@@ -5,6 +8,44 @@
 /[Bb]uilds/
 /[Ll]ogs/
 /[Uu]ser[Ss]ettings/
+/[Mm]emoryCaptures/
+/[Rr]ecordings/
+
+# =========================================================================
+# Archivos de soluciones de IDEs (Visual Studio, Rider, VS Code)
+# =========================================================================
 *.csproj
+*.unityproj
 *.sln
+*.suo
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.opendb
+*.VC.db
 *.slnx
+.vs/
+.vscode/
+.idea/
+*.sln.docstates
+
+# =========================================================================
+# Archivos del Sistema Operativo y basuras de compilación
+# =========================================================================
+.DS_Store
+.DS_Store?
+ehthumbs.db
+Icon?
+Thumbs.db
+sysreset.log
+
+# =========================================================================
+# Archivos de reportes de Asset Store / Packages
+# =========================================================================
+sysreset.log
+*.apk
+*.aab
+*.unitypackage
