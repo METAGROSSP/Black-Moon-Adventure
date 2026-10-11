@@ -76,6 +76,7 @@ GameObject:
   - component: {fileID: 7525187003444841623}
   - component: {fileID: 8528430653609974957}
   - component: {fileID: 8152693565729605341}
+  - component: {fileID: 3905991536021309451}
   m_Layer: 0
   m_Name: Slime
   m_TagString: Untagged
@@ -206,6 +207,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   distanciaPared: 0.3
+  danoContacto: 1
 --- !u!61 &8528430653609974957
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -265,3 +267,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SlimeVida
   vidaMaxima: 3
+  puntosAlMorir: 10
+  fuerzaKnockback: 5
+  tiempoStun: 0.35
+--- !u!95 &3905991536021309451
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9033053988348740857}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 904da956ddb2e4a47b3d6b0bb4b58833, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

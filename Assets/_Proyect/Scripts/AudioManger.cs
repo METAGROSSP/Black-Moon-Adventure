@@ -61,7 +61,7 @@ public class AudioManager : MonoBehaviour
         SetSFXVolume(PlayerPrefs.GetFloat("SFXVol", 0.75f));
     }
 
-    public void ReproducirSFX(AudioClip clip)
+    public void PlaySFX(AudioClip clip)
     {
         if (sfxSource != null && clip != null)
         {

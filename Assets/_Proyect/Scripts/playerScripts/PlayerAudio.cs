@@ -19,7 +19,7 @@ public class PlayerAudio : MonoBehaviour
     {
         if (AudioManager.Instance != null && sonidoAtaque != null)
         {
-            AudioManager.Instance.ReproducirSFX(sonidoAtaque);
+            AudioManager.Instance.PlaySFX(sonidoAtaque);
         }
     }
 }

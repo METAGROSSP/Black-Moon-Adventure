@@ -10,10 +10,21 @@ public class PlayerVida : MonoBehaviour
     [SerializeField] private float tiempoInvulnerable = 0.5f;
     private float cooldownInmunidad;
 
+    [Header("Referencias de Feedback")]
+    [SerializeField] private AudioClip muerteSFX;
+
+    private Animator animator;
+    public bool EstaMuerto { get; private set; }
+
+    private void Awake()
+    {
+        animator = GetComponent<Animator>();
+    }
+
     private void Start()
     {
         vidaActual = vidaMaxima;
-        // Notificamos el estado inicial para inicializar el HUD/UI[cite: 9]
+        EstaMuerto = false;
         GameEvents.OnVidaCambiada?.Invoke(vidaActual, vidaMaxima);
     }
 
@@ -27,18 +38,36 @@ public class PlayerVida : MonoBehaviour
 
     public void RecibirDanio(int cantidad)
     {
-        // Validación de invulnerabilidad
-        if (cooldownInmunidad > 0) return;
+        if (EstaMuerto || cooldownInmunidad > 0) return;
 
         vidaActual = Mathf.Max(0, vidaActual - cantidad);
         cooldownInmunidad = tiempoInvulnerable;
 
-        
         GameEvents.OnVidaCambiada?.Invoke(vidaActual, vidaMaxima);
 
         if (vidaActual <= 0)
         {
-            GameEvents.OnJugadorMuere?.Invoke();
+            ProcesarMuerte();
         }
+    }
+
+    private void ProcesarMuerte()
+    {
+        EstaMuerto = true;
+
+        // 1. Disparar el Trigger en la Máquina de Estados (Animator)
+        if (animator != null)
+        {
+            animator.SetTrigger("Die");
+        }
+
+        // 2. Reproducir sonido de muerte mediante AudioManager Singleton
+        if (AudioManager.Instance != null && muerteSFX != null)
+        {
+            AudioManager.Instance.PlaySFX(muerteSFX);
+        }
+
+        // 3. Notificar a los suscriptores por el patrón Observer
+        GameEvents.OnJugadorMuere?.Invoke();
     }
 }
