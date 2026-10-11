@@ -1,5 +1,5 @@
 using UnityEngine;
-using UnityEngine.Audio; // Requerido para trabajar con AudioMixer
+using UnityEngine.Audio;
 
 public class AudioManager : MonoBehaviour
 {
@@ -27,6 +27,20 @@ public class AudioManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
+    private void OnEnable()
+    {
+        GameEvents.OnMasterVolumeChanged += SetMasterVolume;
+        GameEvents.OnMusicVolumeChanged += SetMusicVolume;
+        GameEvents.OnSFXVolumeChanged += SetSFXVolume;
+    }
+
+    private void OnDisable()
+    {
+        GameEvents.OnMasterVolumeChanged -= SetMasterVolume;
+        GameEvents.OnMusicVolumeChanged -= SetMusicVolume;
+        GameEvents.OnSFXVolumeChanged -= SetSFXVolume;
+    }
+
     private void Start()
     {
         if (musicaDeFondo != null && musicaSource != null)
@@ -35,31 +49,54 @@ public class AudioManager : MonoBehaviour
             musicaSource.loop = true;
             musicaSource.Play();
         }
+
+        // Cargar y aplicar volúmenes guardados al iniciar
+        CargarVolumenes();
     }
 
-    // Método desacoplado para efectos de sonido (SFX)
+    private void CargarVolumenes()
+    {
+        SetMasterVolume(PlayerPrefs.GetFloat("MasterVol", 0.75f));
+        SetMusicVolume(PlayerPrefs.GetFloat("MusicVol", 0.75f));
+        SetSFXVolume(PlayerPrefs.GetFloat("SFXVol", 0.75f));
+    }
+
     public void ReproducirSFX(AudioClip clip)
     {
         if (sfxSource != null && clip != null)
         {
+            // Pitch aleatorio para evitar fatiga auditiva (Game Feel profesional)
+            sfxSource.pitch = Random.Range(0.9f, 1.1f);
             sfxSource.PlayOneShot(clip);
         }
     }
 
-    // Métodos para controlar volúmenes (conectables a Sliders de la UI)
+    public void CambiarMusica(AudioClip nuevaMusica)
+    {
+        // Si no hay nueva música o si es la misma que ya está sonando, no hace nada
+        if (nuevaMusica == null || (musicaSource.clip == nuevaMusica && musicaSource.isPlaying))
+            return;
+
+        musicaSource.Stop();
+        musicaSource.clip = nuevaMusica;
+        musicaSource.Play();
+    }
+
     public void SetMasterVolume(float sliderValue)
     {
-        // Convertimos el valor lineal del Slider (0.0001 a 1) a escala logarítmica (dB)
-        audioMixer.SetFloat("MasterVolume", Mathf.Log10(Mathf.Clamp(sliderValue, 0.0001f, 1f)) * 20);
+        if (audioMixer != null)
+            audioMixer.SetFloat("MasterVolume", Mathf.Log10(Mathf.Clamp(sliderValue, 0.0001f, 1f)) * 20f);
     }
 
     public void SetMusicVolume(float sliderValue)
     {
-        audioMixer.SetFloat("MusicVolume", Mathf.Log10(Mathf.Clamp(sliderValue, 0.0001f, 1f)) * 20);
+        if (audioMixer != null)
+            audioMixer.SetFloat("MusicVolume", Mathf.Log10(Mathf.Clamp(sliderValue, 0.0001f, 1f)) * 20f);
     }
 
     public void SetSFXVolume(float sliderValue)
     {
-        audioMixer.SetFloat("SFXVolume", Mathf.Log10(Mathf.Clamp(sliderValue, 0.0001f, 1f)) * 20);
+        if (audioMixer != null)
+            audioMixer.SetFloat("SFXVolume", Mathf.Log10(Mathf.Clamp(sliderValue, 0.0001f, 1f)) * 20f);
     }
 }

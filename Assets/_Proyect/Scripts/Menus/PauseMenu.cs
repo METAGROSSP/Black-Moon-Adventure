@@ -54,4 +54,9 @@ public class PauseMenu : MonoBehaviour
         Time.timeScale = 1f;
         EnPausa = false;
     }
+
+    public void AbrirOpciones()
+    {
+        GameEvents.OnSolicitarOpciones?.Invoke();
+    }
 }

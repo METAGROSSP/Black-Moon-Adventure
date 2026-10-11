@@ -33,7 +33,7 @@ public class PlayerVida : MonoBehaviour
         vidaActual = Mathf.Max(0, vidaActual - cantidad);
         cooldownInmunidad = tiempoInvulnerable;
 
-        // Disparar evento Observer para UI, Audio y Partículas[cite: 9, 11, 19]
+        
         GameEvents.OnVidaCambiada?.Invoke(vidaActual, vidaMaxima);
 
         if (vidaActual <= 0)
