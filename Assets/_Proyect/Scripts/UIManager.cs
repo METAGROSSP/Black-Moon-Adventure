@@ -1,25 +1,57 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro; // Asegúrate de tener TextMeshPro importado
+using TMPro;
 
 public class UIManager : MonoBehaviour
 {
-    [Header("Referencias de UI")]
+    // Patrón Singleton para acceso global
+    public static UIManager Instance { get; private set; }
+
+    [Header("Referencias de UI (HUD)")]
     [SerializeField] private Image barraVida;
     [SerializeField] private TMP_Text textoPuntos;
 
+    [Header("Feedback Visual de Daño (Juice)")]
+    [SerializeField] private Image overlayDanio;
+    [SerializeField] private float duracionFlash = 0.2f;
+    [SerializeField] private float alphaMaximo = 0.4f; // Intensidad del destello rojo (0 a 1)
+
+    private Coroutine rutinaFlash;
+    private int ultimaVida; // Guarda el valor previo para verificar si la vida bajó (Daño)
+
+    private void Awake()
+    {
+        // Implementación del Patrón Singleton
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+    }
+
     private void OnEnable()
     {
-        // Suscribirse a los eventos del canal GameEvents
+        // Suscripción al canal de eventos (Patrón Observer)
         GameEvents.OnVidaCambiada += ActualizarVida;
         GameEvents.OnPuntosCambiados += ActualizarPuntos;
     }
 
     private void OnDisable()
     {
-        // Desuscribirse SIEMPRE para evitar fugas de memoria o errores nulos
+        // Desuscripción obligatoria para evitar Memory Leaks y MissingReferenceException
         GameEvents.OnVidaCambiada -= ActualizarVida;
         GameEvents.OnPuntosCambiados -= ActualizarPuntos;
+    }
+
+    private void Start()
+    {
+        // Muestra los puntos iniciales (0) al arrancar la escena desde el GameManager
+        if (GameManager.Instance != null)
+        {
+            ActualizarPuntos(GameManager.Instance.Puntos);
+        }
     }
 
     private void ActualizarVida(int vidaActual, int vidaMaxima)
@@ -29,22 +61,52 @@ public class UIManager : MonoBehaviour
             // Modifica el rellenado de la imagen (Image Type debe ser Filled)
             barraVida.fillAmount = (float)vidaActual / vidaMaxima;
         }
+
+        // Disparar el destello rojo en la UI solo si la vida es menor que la anterior
+        if (vidaActual < ultimaVida)
+        {
+            MostrarFlashDanio();
+        }
+
+        ultimaVida = vidaActual; // Actualizar variable de control
     }
 
     private void ActualizarPuntos(int puntos)
     {
         if (textoPuntos != null)
         {
-            // Formatea los puntos (ejemplo: 0005) o simplemente puntos.ToString()
+            // Formatea los puntos a 4 dígitos (ejemplo: 0005)
             textoPuntos.text = puntos.ToString("D4");
         }
     }
-    private void Start()
+
+    public void MostrarFlashDanio()
     {
-        // Muestra los puntos iniciales (0) al arrancar la escena
-        if (GameManager.Instance != null)
+        if (overlayDanio == null) return;
+
+        if (rutinaFlash != null)
         {
-            ActualizarPuntos(GameManager.Instance.Puntos);
+            StopCoroutine(rutinaFlash);
         }
+
+        rutinaFlash = StartCoroutine(RutinaFlashOverlay());
+    }
+
+    private IEnumerator RutinaFlashOverlay()
+    {
+        float tiempo = 0f;
+        Color colorBase = overlayDanio.color;
+
+        // Se usa Time.unscaledDeltaTime para que funcione aun si hay Hitstop (Time.timeScale = 0)
+        while (tiempo < duracionFlash)
+        {
+            tiempo += Time.unscaledDeltaTime;
+            float alpha = Mathf.Lerp(alphaMaximo, 0f, tiempo / duracionFlash);
+            overlayDanio.color = new Color(colorBase.r, colorBase.g, colorBase.b, alpha);
+            yield return null;
+        }
+
+        // Garantiza transparencia total al terminar la corrutina
+        overlayDanio.color = new Color(colorBase.r, colorBase.g, colorBase.b, 0f);
     }
 }
