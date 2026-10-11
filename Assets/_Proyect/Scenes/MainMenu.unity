@@ -522,6 +522,54 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 7861374901028548859, guid: 43b4d7f6de8dcb14180d3f722a8c5260, type: 3}
   m_PrefabInstance: {fileID: 1656794896}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1065770724
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1065770725}
+  - component: {fileID: 1065770726}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1065770725
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1065770724}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 44.38058, y: 15.58033, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1065770726
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1065770724}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 054864726fef02947ace82b633bc60ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OptionsMenu
+  panelOpciones: {fileID: 1444834917}
+  sliderMaster: {fileID: 1542443600}
+  sliderMusica: {fileID: 1636513669}
+  sliderSFX: {fileID: 782337439}
 --- !u!1 &1444834917 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5443171552994539948, guid: 1ddfde2d3d31f8043bdb33bdaeb148d4, type: 3}
@@ -1535,6 +1583,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4995819670213072283, guid: 1ddfde2d3d31f8043bdb33bdaeb148d4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1065770726}
+    - target: {fileID: 4995819670213072283, guid: 1ddfde2d3d31f8043bdb33bdaeb148d4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: CerrarPanel
+      objectReference: {fileID: 0}
+    - target: {fileID: 4995819670213072283, guid: 1ddfde2d3d31f8043bdb33bdaeb148d4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: OptionsMenu, Assembly-CSharp
+      objectReference: {fileID: 0}
     - target: {fileID: 5443171552994539948, guid: 1ddfde2d3d31f8043bdb33bdaeb148d4, type: 3}
       propertyPath: m_Name
       value: PanelOpciones
@@ -1554,3 +1614,4 @@ SceneRoots:
   - {fileID: 1593615734}
   - {fileID: 2044699030}
   - {fileID: 2070544122}
+  - {fileID: 1065770725}
